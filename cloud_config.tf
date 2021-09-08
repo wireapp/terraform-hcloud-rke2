@@ -22,7 +22,7 @@ locals {
   userdata_agent            = module.rke2_cloudconfig_agent.userdata
 
   k8s_extra_config = {
-    kubelet-arg = var.setup_hetzner_ccm ? [
+    kubelet-arg = var.hetzner_ccm_enabled ? [
       "cloud-provider=external"
     ] : []
   }
@@ -71,8 +71,8 @@ locals {
     EOQ
     ,
     # This installs the Hetzner Cloud Controller Manager if enabled (the default)
-    var.setup_hetzner_ccm ? <<-EOQ
-      curl -sfL https://raw.githubusercontent.com/hetznercloud/hcloud-cloud-controller-manager/v1.8.1/deploy/ccm.yaml > /var/lib/rancher/custom_rke2_addons/hetzner_ccm.yaml
+    var.hetzner_ccm_enabled ? <<-EOQ
+      curl -sfL https://github.com/hetznercloud/hcloud-cloud-controller-manager/releases/download/${var.hetzner_ccm_version}/ccm-networks.yaml > /var/lib/rancher/custom_rke2_addons/hetzner_ccm.yaml
       cat << EOG > /var/lib/rancher/custom_rke2_addons/nginx-use-loadbalancer.yaml
       apiVersion: helm.cattle.io/v1
       kind: HelmChartConfig
