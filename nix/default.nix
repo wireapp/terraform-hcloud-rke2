@@ -20,14 +20,13 @@ in
     name = "dev-env";
     paths = [
       profileEnv
-      (pkgs.terraform_0_12.withPlugins (p: [
+      (pkgs.terraform.withPlugins (p: [
         p.hcloud
         p.local
         p.null
         p.random
         p.tls
       ]))
-      pkgs.rke
     ];
   };
 }
