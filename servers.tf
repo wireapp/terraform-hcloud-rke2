@@ -1,16 +1,17 @@
 resource "hcloud_ssh_key" "root" {
-  name       = "root-${random_pet.cluster_name.id}"
-  public_key = tls_private_key.root.public_key_openssh
+  name       = "root-${var.cluster_name}"
+  public_key = tls_private_key.root[0].public_key_openssh
+  count      = var.ssh_key_create ? 1 : 0
 }
 
 # These are controlplane nodes, running etcd.
 # They optionally also run worker payloads.
 resource "hcloud_server" "controlplane" {
-  count       = var.num_controlplane
-  name        = "controlplane-${random_pet.cluster_name.id}-${count.index}"
-  image       = "fedora-32"
-  server_type = "cx11"
-  ssh_keys    = [hcloud_ssh_key.root.name]
+  count       = var.controlplane_number
+  name        = "controlplane-${var.cluster_name}-${count.index}"
+  image       = "ubuntu-20.04"
+  server_type = var.controlplane_type
+  ssh_keys    = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
   location    = "nbg1"
   labels = merge(
     { "role-controlplane" = "1" },
@@ -21,7 +22,7 @@ resource "hcloud_server" "controlplane" {
 
 # Attach controlplane nodes to the private network.
 resource "hcloud_server_network" "controlplane" {
-  count     = var.num_controlplane
+  count     = var.controlplane_number
   server_id = hcloud_server.controlplane[count.index].id
   subnet_id = hcloud_network_subnet.nodes.id
 }
@@ -36,11 +37,11 @@ output "controlplane_ipv6s" {
 
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
-  count       = var.num_workers
-  name        = "worker-${random_pet.cluster_name.id}-${count.index}"
-  image       = "fedora-32"
-  server_type = "cx11"
-  ssh_keys    = [hcloud_ssh_key.root.name]
+  count       = var.workers_number
+  name        = "worker-${var.cluster_name}-${count.index}"
+  image       = "ubuntu-20.04"
+  server_type = var.worker_type
+  ssh_keys    = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
   location    = "nbg1"
   labels      = { "role-worker" = "1" }
   user_data   = local.userdata_agent
@@ -50,7 +51,7 @@ resource "hcloud_server" "worker" {
 # Even though they might be able to reach other nodes through their public IPs,
 # the private network (on hetzner at least) is way faster.
 resource "hcloud_server_network" "worker" {
-  count     = var.num_workers
+  count     = var.workers_number
   server_id = hcloud_server.worker[count.index].id
   subnet_id = hcloud_network_subnet.nodes.id
 }
