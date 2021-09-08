@@ -1,6 +1,6 @@
 # This creates a load balancer for our controlplane.
 resource "hcloud_load_balancer" "controlplane" {
-  name               = "controlplane-${random_pet.cluster_name.id}"
+  name               = "controlplane-${var.cluster_name}"
   load_balancer_type = "lb11"
   location           = "nbg1"
 }

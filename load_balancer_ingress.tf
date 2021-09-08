@@ -2,17 +2,17 @@
 # This all only applies if Hetzner CCM isn't enabled, as it'll create services
 # of type LoadBalancer on its own.
 resource "hcloud_load_balancer" "ingress" {
-  name               = "ingress-${random_pet.cluster_name.id}"
+  name               = "ingress-${var.cluster_name}"
   load_balancer_type = "lb11"
   location           = "nbg1"
-  count = var.setup_hetzner_ccm ? 0 : 1
+  count = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This attaches the load balancer to the network.
 resource "hcloud_load_balancer_network" "ingress" {
   load_balancer_id = hcloud_load_balancer.ingress[0].id
   network_id       = hcloud_network.nodes.id
-  count = var.setup_hetzner_ccm ? 0 : 1
+  count = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This adds a new ingress target to the loadbalancer, which balances among
@@ -28,7 +28,7 @@ resource "hcloud_load_balancer_target" "ingress" {
     # (as the load balancer isn't yet part of the network)
     hcloud_load_balancer_network.ingress
   ]
-  count = var.setup_hetzner_ccm ? 0 : 1
+  count = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This registers a service at port 80 (http)
@@ -37,7 +37,7 @@ resource "hcloud_load_balancer_service" "ingress_http" {
   protocol         = "tcp"
   listen_port      = "80"
   destination_port = "80"
-  count = var.setup_hetzner_ccm ? 0 : 1
+  count = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This registers a service at port 443 (https)
@@ -46,15 +46,15 @@ resource "hcloud_load_balancer_service" "ingress_rke_management" {
   protocol         = "tcp"
   listen_port      = "443"
   destination_port = "443"
-  count = var.setup_hetzner_ccm ? 0 : 1
+  count = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 output "ingress_lb_ipv4" {
-  value       = hcloud_load_balancer.ingress[0].ipv4
+  value       = hcloud_load_balancer.ingress.*.ipv4
   description = "The IPv4 address of the load balancer exposing the ingress."
 }
 
 output "ingress_lb_ipv6" {
-  value       = hcloud_load_balancer.ingress[0].ipv6
+  value       = hcloud_load_balancer.ingress.*.ipv6
   description = "The IPv4 address of the load balancer exposing the ingress."
 }
