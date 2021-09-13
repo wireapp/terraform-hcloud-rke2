@@ -34,14 +34,6 @@ resource "hcloud_load_balancer_service" "controlplane_service" {
   destination_port = "6443"
 }
 
-# This registers a service at port 9345 (rke management port)
-resource "hcloud_load_balancer_service" "controlplane_rke_management" {
-  load_balancer_id = hcloud_load_balancer.controlplane.id
-  protocol         = "tcp"
-  listen_port      = "9345"
-  destination_port = "9345"
-}
-
 output "controlplane_lb_ipv4" {
   value       = hcloud_load_balancer.controlplane.ipv4
   description = "The IPv4 address of the load balancer exposing the controlplane."
