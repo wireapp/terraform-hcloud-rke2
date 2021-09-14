@@ -47,7 +47,7 @@ variable "server_url" {
 }
 
 variable "extra_config" {
-  type        = object
+  type        = map
   description = "Additional config to be merged to /etc/rancher/rke2/config.yaml."
   default     = {}
 }

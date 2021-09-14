@@ -26,9 +26,7 @@ locals {
     var.hetzner_ccm_enabled ? { "cloud-controller-name": "hcloud" } : {},
     {
       # This configures kube-apiserver to prefer InternalIP over everything
-      kube-apiserver-arg = [
-        "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
-      ]
+      kube-apiserver-arg = "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
     }
   )
 
