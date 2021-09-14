@@ -21,21 +21,16 @@ locals {
   userdata_server           = module.rke2_cloudconfig_server.userdata
   userdata_agent            = module.rke2_cloudconfig_agent.userdata
 
-  k8s_extra_config = {
-    kubelet-arg = var.hetzner_ccm_enabled ? [
-      "cloud-provider=external"
-    ] : []
-  }
-
-  k8s_extra_config_server = merge(local.k8s_extra_config, {
-    # This configures kube-apiserver to prefer InternalIP over everything
-    # TODO(arianvp): open issue
-    # This arg is ignored by rke2 agents, so we don't need to conditionalize
-    # k8s_extra_config.
-    kube-apiserver-arg = [
-      "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
-    ]
-  })
+  k8s_extra_config = merge(
+    var.hetzner_ccm_enabled ? { "kubelet-arg" = "cloud-provider=external" } : {},
+    var.hetzner_ccm_enabled ? { "cloud-controller-name": "hcloud" } : {},
+    {
+      # This configures kube-apiserver to prefer InternalIP over everything
+      kube-apiserver-arg = [
+        "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
+      ]
+    }
+  )
 
   # Before running the installation script, but after cloud-init already provided the
   # /etc/rancher/rke2/config.yaml file, annotate it with the internal ip
@@ -86,7 +81,7 @@ locals {
             autoscaling:
               enabled: true
               minReplicas: 2
-              maxReplicas: 5
+              maxReplicas: 3
             hostNetwork: false
             service:
               enabled: true
@@ -108,7 +103,7 @@ module "rke2_cloudconfig_server_bootstrap" {
   install_rke2_type   = "server"
   install_script_pre  = local.install_script_pre
   install_script_post = local.install_script_post
-  extra_config        = local.k8s_extra_config_server
+  extra_config        = local.k8s_extra_config
 }
 
 module "rke2_cloudconfig_server" {
@@ -120,7 +115,7 @@ module "rke2_cloudconfig_server" {
   server_url          = local.rke2_server_url
   install_script_pre  = join("\n", [local.install_script_pre, "sleep 200"])
   install_script_post = local.install_script_post
-  extra_config        = local.k8s_extra_config_server
+  extra_config        = local.k8s_extra_config
 }
 
 module "rke2_cloudconfig_agent" {
