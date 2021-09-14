@@ -23,7 +23,7 @@ locals {
 
   k8s_extra_config = merge(
     var.hetzner_ccm_enabled ? { "kubelet-arg" = "cloud-provider=external" } : {},
-    var.hetzner_ccm_enabled ? { "cloud-controller-name": "hcloud" } : {},
+    var.hetzner_ccm_enabled ? { "cloud-provider-name": "hcloud" } : {},
     {
       # This configures kube-apiserver to prefer InternalIP over everything
       kube-apiserver-arg = "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
