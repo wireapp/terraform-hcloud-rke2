@@ -4,6 +4,12 @@ variable "ssh_key_create" {
   default     = false
 }
 
+variable "ssh_key_path" {
+  type        = string
+  description = "The path to persist the ssh key path to."
+  default     = "id_root"
+}
+
 variable "cluster_name" {
   type        = string
   description = "name of the cluster"
@@ -57,3 +63,8 @@ variable "hetzner_ccm_version" {
   default     = "v1.12.0"
 }
 
+variable "rancher2_import" {
+  type        = string
+  description = "Rancher 2 import token"
+  default     = null
+}
