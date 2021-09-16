@@ -14,7 +14,7 @@ module "base" {
 module "controlplane" {
   source = "./controlplane"
   hcloud_token = var.hetzner_project_api_token
-  ssh_keys = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
+  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   controlplane_number = var.controlplane_number
   controlplane_type = var.controlplane_type
@@ -36,7 +36,7 @@ module "controlplane" {
 module "workers" {
   source = "./workers"
   hcloud_token = var.hetzner_project_api_token
-  ssh_keys = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
+  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   workers_number = var.workers_number
   worker_type = var.worker_type
