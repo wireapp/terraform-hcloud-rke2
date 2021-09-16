@@ -19,7 +19,8 @@ write_files:
       - ${lb_external_v4}
       - ${lb_external_v6}
     token: "${rke2_cluster_secret}"
-    node-taint: ${node_taint}
+    node-taint: 
+    ${node_taint}
     cloud-provider-name: "hcloud"
     kube-apiserver-arg:
     - "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
