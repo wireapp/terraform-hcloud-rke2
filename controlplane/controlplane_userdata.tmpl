@@ -46,10 +46,11 @@ write_files:
     kind: Secret
     metadata:
       name: hcloud
+      namespace: kube-system
     type: Opaque
     data:
       token: ${api_token_encoded}
-      network: ${lb_id_encoded}
+      network: ${network_id_encoded}
 - path: /var/lib/rancher/rke2/server/manifests/hcloud-ccm-networks.yaml
   permissions: "0600"
   owner: root:root

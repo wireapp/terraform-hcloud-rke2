@@ -23,7 +23,7 @@ resource "hcloud_server" "controlplane" {
     lb_id = var.lb_id
     api_token = var.hcloud_token
     api_token_encoded = base64encode(var.hcloud_token)
-    lb_id_encoded = base64encode(var.lb_id)
+    network_id_encoded = base64encode(var.network_id)
     node_id = "worker-${var.cluster_name}-${count.index}"
     node_taint = yamlencode((! var.controlplane_has_worker) ? ["CriticalAddonsOnly=true:NoExecute"] : [])
   })
