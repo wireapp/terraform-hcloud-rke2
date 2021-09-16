@@ -27,7 +27,7 @@ resource "hcloud_server" "worker" {
 resource "hcloud_server_network" "worker" {
   count     = var.workers_number
   server_id = hcloud_server.worker[count.index].id
-  subnet_id = var.network_id
+  subnet_id = var.subnet_id
 }
 
 output "worker_ipv4s" {
