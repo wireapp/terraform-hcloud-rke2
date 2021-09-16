@@ -31,10 +31,6 @@ variable "lb_id" {
   description = "id of the load balancer to connect masters"
 }
 
-variable "network_id" {
-  type        = string
-  description = "network id to put servers into"
-}
 variable "subnet_id" {
   type        = string
   description = "network id to put servers into"
