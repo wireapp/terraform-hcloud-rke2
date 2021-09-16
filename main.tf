@@ -25,6 +25,7 @@ module "controlplane" {
   lb_ip = module.base.controlplane_lb_ip
   lb_id = module.base.controlplane_lb_id
   network_id = module.base.nodes_network_id
+  subnet_id = module.base.nodes_subnet_id
 
   lb_external_v4 = module.base.controlplane_lb_ipv4
   lb_external_v6 = module.base.controlplane_lb_ipv6
@@ -46,6 +47,6 @@ module "workers" {
   
   lb_ip = module.base.controlplane_lb_ip
   lb_id = module.base.controlplane_lb_id
-  network_id = module.base.nodes_network_id
+  subnet_id = module.base.nodes_subnet_id
 
 }

@@ -35,7 +35,10 @@ variable "network_id" {
   type        = string
   description = "network id to put servers into"
 }
-
+variable "subnet_id" {
+  type        = string
+  description = "network id to put servers into"
+}
 variable "ssh_keys" {
   type        = list
   default     = []
