@@ -1,0 +1,51 @@
+# This token is used to bootstrap the cluster and join new nodes
+resource "random_string" "rke2_token" {
+  length = 64
+}
+
+module "base" {
+  source = "./base"
+  hcloud_token = var.hetzner_project_api_token
+
+  cluster_name = var.cluster_name
+  hetzner_ccm_enabled = var.hetzner_ccm_enabled
+}
+
+module "controlplane" {
+  source = "./controlplane"
+  hcloud_token = var.hetzner_project_api_token
+  ssh_keys = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
+
+  controlplane_number = var.controlplane_number
+  controlplane_type = var.controlplane_type
+
+  rke2_cluster_secret = random_string.rke2_token.result
+  cluster_name = var.cluster_name
+  
+  lb_ip = module.base.controlplane_lb_ip
+  lb_id = module.base.controlplane_lb_id
+  network_id = module.base.nodes_network_id
+
+  lb_external_v4 = module.base.controlplane_lb_ipv4
+  lb_external_v6 = module.base.controlplane_lb_ipv6
+
+  hetzner_ccm_enabled = var.hetzner_ccm_enabled
+  hetzner_ccm_version = var.hetzner_ccm_version
+}
+
+module "workers" {
+  source = "./workers"
+  hcloud_token = var.hetzner_project_api_token
+  ssh_keys = var.ssh_key_create ? [hcloud_ssh_key.root[0].name] : []
+
+  workers_number = var.workers_number
+  worker_type = var.worker_type
+
+  rke2_cluster_secret = random_string.rke2_token.result
+  cluster_name = var.cluster_name
+  
+  lb_ip = module.base.controlplane_lb_ip
+  lb_id = module.base.controlplane_lb_id
+  network_id = module.base.nodes_network_id
+
+}

@@ -10,10 +10,16 @@ variable "ssh_key_path" {
   default     = "id_root"
 }
 
+variable "hetzner_project_api_token" {
+  type        = string
+  description = "hetzner api token with read permission to read lb state"
+}
+
 variable "cluster_name" {
   type        = string
   description = "name of the cluster"
 }
+
 
 variable "controlplane_number" {
   type        = number
@@ -26,13 +32,6 @@ variable "controlplane_has_worker" {
   description = "Whether to register the controlplane node as a worker node too"
   default     = false
 }
-
-variable "controlplane_hostname" {
-  type        = string
-  description = "The DNS hostname pointing to the load balancer created here. If set, nodes will be configured to contact it, instead of its IPv4 address. Make sure to pass this in as a string, and when creating the record, use the controlplane_ipv4 output as a value, so you can create the record while machines are booting up (and this module returned)"
-  default     = null
-}
-
 variable "controlplane_type" {
   type        = string
   description = "Hetzner machine type for controlplane"
@@ -51,6 +50,7 @@ variable "worker_type" {
   default     = "cx51"
 }
 
+
 variable "hetzner_ccm_enabled" {
   type        = bool
   description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
@@ -68,3 +68,4 @@ variable "rancher2_import" {
   description = "Rancher 2 import token"
   default     = null
 }
+
