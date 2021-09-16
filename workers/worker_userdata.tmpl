@@ -12,7 +12,6 @@ write_files:
   content: |
     server: https://${lb_address}:9345
     token: "${rke2_cluster_secret}"
-    cloud-provider-name: "hcloud"
     kubelet-arg:
     - "cloud-provider=external"
 - path: /var/lib/rancher/rke2/server/manifests/rke2-canal.yaml
@@ -27,7 +26,7 @@ write_files:
     spec:
       valuesContent: |-
         flannel:
-          iface: "priv"
+          iface: "ens0"
 - path: /var/lib/rancher/rke2/server/manifests/rke2-hcloud-loadbalancer.yaml
   permissions: "0600"
   owner: root:root
@@ -58,9 +57,9 @@ write_files:
   content: |
     #!/bin/bash
     internal_ip=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "ip:" | head -n 1| cut -d ":" -f2 | xargs)
-    internal_mac=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "mac_address:" | head -n 1 | awk '{print $2}')
+    # internal_mac=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "mac_address:" | head -n 1 | awk '{print $2}')
     echo "node-ip: $internal_ip" >> /etc/rancher/rke2/config.yaml
-    echo -e "[Match]\nMACAddress=$internal_mac\n[Link]\nName=priv" > /etc/systemd/network/80-internal.link
+    # echo -e "[Match]\nMACAddress=$internal_mac\n[Link]\nName=priv" > /etc/systemd/network/80-internal.link
 
     function one_healthy {
       res=$(jq -r '.load_balancer.targets | .[] | select(.label_selector.selector == "role-controlplane=1") | .targets | any(.health_status | all(.status == "healthy"))')
