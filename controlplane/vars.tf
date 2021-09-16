@@ -57,6 +57,11 @@ variable "network_id" {
   description = "network id to put servers into"
 }
 
+variable "subnet_id" {
+  type        = string
+  description = "subnet id to put servers into"
+}
+
 variable "hetzner_ccm_enabled" {
   type        = bool
   description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
