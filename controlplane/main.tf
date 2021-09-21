@@ -25,7 +25,7 @@ resource "hcloud_server" "controlplane" {
     api_token_encoded = base64encode(var.hcloud_token)
     network_id_encoded = base64encode(var.network_id)
     node_id = "worker-${var.cluster_name}-${count.index}"
-    node_taint = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute","node-role.kubernetes.io/control-plane=true:NoSchedule"] : [])
+    node_taint = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute","node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
   })
 }
 
