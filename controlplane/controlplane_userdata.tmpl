@@ -25,7 +25,7 @@ write_files:
     - "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
     kubelet-arg:
     - "cloud-provider=external"
-- path: /var/lib/rancher/rke2/server/manifests/rke2-canal.yaml
+- path: /var/lib/rancher/rke2/server/manifests/rke2-canal-config.yaml
   permissions: "0600"
   owner: root:root
   content: |
@@ -51,6 +51,30 @@ write_files:
     data:
       token: ${api_token_encoded}
       network: ${network_id_encoded}
+- path: /var/lib/rancher/rke2/server/manifests/rke2-hcloud-loadbalancer.yaml
+  permissions: "0600"
+  owner: root:root
+  content: |
+    apiVersion: helm.cattle.io/v1
+    kind: HelmChartConfig
+    metadata:
+      name: rke2-ingress-nginx
+      namespace: kube-system
+    spec:
+      valuesContent: |-
+        controller:
+          kind: Deployment
+          autoscaling:
+            enabled: true
+            minReplicas: 2
+            maxReplicas: 3
+          hostNetwork: false
+          service:
+            enabled: true
+            type: LoadBalancer
+            externalTrafficPolicy: Local
+            annotations:
+              load-balancer.hetzner.cloud/location: nbg1
 - path: /var/lib/rancher/rke2/server/manifests/hcloud-ccm-networks.yaml
   permissions: "0600"
   owner: root:root

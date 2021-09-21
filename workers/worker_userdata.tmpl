@@ -14,43 +14,6 @@ write_files:
     token: "${rke2_cluster_secret}"
     kubelet-arg:
     - "cloud-provider=external"
-- path: /var/lib/rancher/rke2/server/manifests/rke2-canal.yaml
-  permissions: "0600"
-  owner: root:root
-  content: |
-    apiVersion: helm.cattle.io/v1
-    kind: HelmChartConfig
-    metadata:
-      name: rke2-canal
-      namespace: kube-system
-    spec:
-      valuesContent: |-
-        flannel:
-          iface: "ens0"
-- path: /var/lib/rancher/rke2/server/manifests/rke2-hcloud-loadbalancer.yaml
-  permissions: "0600"
-  owner: root:root
-  content: |
-    apiVersion: helm.cattle.io/v1
-    kind: HelmChartConfig
-    metadata:
-      name: rke2-ingress-nginx
-      namespace: kube-system
-    spec:
-      valuesContent: |-
-        controller:
-          kind: Deployment
-          autoscaling:
-            enabled: true
-            minReplicas: 2
-            maxReplicas: 3
-          hostNetwork: false
-          service:
-            enabled: true
-            type: LoadBalancer
-            externalTrafficPolicy: Local
-            annotations:
-              load-balancer.hetzner.cloud/location: nbg1
 - path: /opt/rke2/run_rke2.sh
   permissions: "0755"
   owner: root:root
