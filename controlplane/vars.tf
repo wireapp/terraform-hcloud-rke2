@@ -20,12 +20,6 @@ variable "controlplane_has_worker" {
   default     = false
 }
 
-variable "controlplane_hostname" {
-  type        = string
-  description = "The DNS hostname pointing to the load balancer created here. If set, nodes will be configured to contact it, instead of its IPv4 address. Make sure to pass this in as a string, and when creating the record, use the controlplane_ipv4 output as a value, so you can create the record while machines are booting up (and this module returned)"
-  default     = null
-}
-
 variable "controlplane_type" {
   type        = string
   description = "Hetzner machine type for controlplane"
