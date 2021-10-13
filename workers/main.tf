@@ -16,7 +16,6 @@ resource "hcloud_server" "worker" {
     rke2_channel = "stable"
     clustername = var.cluster_name
     lb_id = var.lb_id
-    hcloud_token = var.hcloud_token
     node_id = "worker-${var.cluster_name}-${count.index}"
   })
 }

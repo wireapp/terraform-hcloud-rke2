@@ -37,7 +37,6 @@ module "controlplane" {
 module "workers" {
   source = "./workers"
 
-  hcloud_token = var.hcloud_token
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   workers_number = var.workers_number

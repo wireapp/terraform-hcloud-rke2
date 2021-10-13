@@ -1,5 +1,3 @@
-variable "hcloud_token" {}
-
 variable "cluster_name" {
   type        = string
   description = "name of the cluster"
@@ -23,20 +21,11 @@ variable "rke2_cluster_secret" {
   description = "Cluster secret for rke2 cluster registration"
 }
 
-variable "lb_ip" {
-  type        = string
-  description = "ip of the lb to use to connect agents"
-}
-
-variable "lb_id" {
-  type        = string
-  description = "id of the load balancer to connect masters"
-}
-
 variable "subnet_id" {
   type        = string
   description = "network id to put servers into"
 }
+
 variable "ssh_keys" {
   type        = list
   default     = []
