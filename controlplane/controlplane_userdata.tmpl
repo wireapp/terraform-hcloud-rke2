@@ -49,7 +49,7 @@ write_files:
       namespace: kube-system
     type: Opaque
     data:
-      token: ${api_token_encoded}
+      token: ${base64encode(hcloud_token)}
       network: ${network_id_encoded}
 - path: /var/lib/rancher/rke2/server/manifests/rke2-ingress-hcloud-lb.yaml
   permissions: "0600"
@@ -301,7 +301,7 @@ write_files:
     }
     function get_lb {
       LB="$(echo ${lb_id} | cut -d \- -f 1)"
-      curl -sSL -H "Authorization: Bearer ${api_token}" "https://api.hetzner.cloud/v1/load_balancers/$LB"
+      curl -sSL -H "Authorization: Bearer ${hcloud_token}" "https://api.hetzner.cloud/v1/load_balancers/$LB"
     }
     while true; do
       res="$(get_lb | num_healthy)"

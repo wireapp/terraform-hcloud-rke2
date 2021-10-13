@@ -21,8 +21,7 @@ resource "hcloud_server" "controlplane" {
     rke2_channel = "stable"
     clustername = var.cluster_name
     lb_id = var.lb_id
-    api_token = var.hcloud_token
-    api_token_encoded = base64encode(var.hcloud_token)
+    hcloud_token = var.hcloud_token
     network_id_encoded = base64encode(var.network_id)
     node_id = "worker-${var.cluster_name}-${count.index}"
     node_taint = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute","node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])

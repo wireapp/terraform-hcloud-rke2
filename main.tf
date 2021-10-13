@@ -5,7 +5,6 @@ resource "random_string" "rke2_token" {
 
 module "base" {
   source = "./base"
-  hcloud_token = var.hetzner_project_api_token
 
   cluster_name = var.cluster_name
   hetzner_ccm_enabled = var.hetzner_ccm_enabled
@@ -13,7 +12,8 @@ module "base" {
 
 module "controlplane" {
   source = "./controlplane"
-  hcloud_token = var.hetzner_project_api_token
+
+  hcloud_token = var.hcloud_token
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   controlplane_number = var.controlplane_number
@@ -36,7 +36,8 @@ module "controlplane" {
 
 module "workers" {
   source = "./workers"
-  hcloud_token = var.hetzner_project_api_token
+
+  hcloud_token = var.hcloud_token
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   workers_number = var.workers_number
@@ -48,5 +49,4 @@ module "workers" {
   lb_ip = module.base.controlplane_lb_ip
   lb_id = module.base.controlplane_lb_id
   subnet_id = module.base.nodes_subnet_id
-
 }

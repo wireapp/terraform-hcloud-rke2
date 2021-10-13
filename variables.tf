@@ -10,7 +10,7 @@ variable "ssh_key_path" {
   default     = "id_root"
 }
 
-variable "hetzner_project_api_token" {
+variable "hcloud_token" {
   type        = string
   description = "hetzner api token with read permission to read lb state"
 }

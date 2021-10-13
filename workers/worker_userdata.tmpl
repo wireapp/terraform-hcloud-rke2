@@ -30,7 +30,7 @@ write_files:
     }
     function get_lb {
       LB="$(echo ${lb_id} | cut -d \- -f 1)"
-      curl -sSL -H "Authorization: Bearer ${api_token}" "https://api.hetzner.cloud/v1/load_balancers/$LB"
+      curl -sSL -H "Authorization: Bearer ${hcloud_token}" "https://api.hetzner.cloud/v1/load_balancers/$LB"
     }
     while true; do
       get_lb | one_healthy
