@@ -1,4 +1,7 @@
-variable "hcloud_token" {}
+variable "hcloud_token" {
+  type        = string
+  description = "hetzner cloud api token. Used by the CCM, if the CCM is used"
+}
 
 variable "cluster_name" {
   type        = string
@@ -47,11 +50,6 @@ variable "lb_external_v4" {
 variable "lb_external_v6" {
   type        = string
   description = "external v4 ip of the lb"
-}
-
-variable "lb_id" {
-  type        = string
-  description = "id of the load balancer to connect masters"
 }
 
 variable "network_id" {

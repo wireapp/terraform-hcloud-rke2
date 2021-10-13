@@ -11,11 +11,11 @@ write_files:
   owner: root:root
   content: |
     %{ if master_index != 0 }
-    server: https://${lb_address}:9345
+    server: ${rke2_url}
     %{ endif }
     disable-cloud-controller: true
     tls-san:
-      - ${lb_address}
+      - ${lb_ip}
       - ${lb_external_v4}
       - ${lb_external_v6}
     token: "${rke2_cluster_secret}"
@@ -296,21 +296,8 @@ write_files:
     # echo -e "[Match]\nMACAddress=$internal_mac\n[Link]\nName=priv" > /etc/systemd/network/80-internal.link
 
     %{ if master_index != 0 }
-    function num_healthy {
-      jq -r '[.load_balancer.targets | .[] | select(.label_selector.selector == "role-controlplane=1") | .targets | .[] | select(.health_status | all(.status == "healthy"))] | length'
-    }
-    function get_lb {
-      LB="$(echo ${lb_id} | cut -d \- -f 1)"
-      curl -sSL -H "Authorization: Bearer ${hcloud_token}" "https://api.hetzner.cloud/v1/load_balancers/$LB"
-    }
-    while true; do
-      res="$(get_lb | num_healthy)"
-      if [ "$?" == 0 ] && [ "$res" -ge ${master_index} ]; then
-        break
-      fi
-      echo "not enought masters ready to join next ($res / ${master_index})"
-      sleep 10
-    done
+    # wait for first master to be up
+    while ! curl -sk -m 5 "${rke2_url}"; do sleep 1; done
     %{ endif }
     curl -fsSL https://raw.githubusercontent.com/rancher/rke2/master/install.sh --output install.sh
     chmod u+x install.sh

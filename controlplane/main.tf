@@ -11,20 +11,20 @@ resource "hcloud_server" "controlplane" {
     { "role-controlplane" = "1" },
     var.controlplane_has_worker ? { "role-worker" = "1" } : {}
   )
-  user_data   = templatefile("${path.module}/controlplane_userdata.tmpl", {
-    extra_ssh_keys = []
+  user_data = templatefile("${path.module}/controlplane_userdata.tmpl", {
+    extra_ssh_keys      = []
     rke2_cluster_secret = var.rke2_cluster_secret
-    lb_address = var.lb_ip
-    lb_external_v4 = var.lb_external_v4
-    lb_external_v6 = var.lb_external_v6
-    master_index = count.index
-    rke2_channel = "stable"
-    clustername = var.cluster_name
-    lb_id = var.lb_id
-    hcloud_token = var.hcloud_token
-    network_id_encoded = base64encode(var.network_id)
-    node_id = "worker-${var.cluster_name}-${count.index}"
-    node_taint = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute","node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
+    lb_ip               = var.lb_ip
+    lb_external_v4      = var.lb_external_v4
+    lb_external_v6      = var.lb_external_v6
+    master_index        = count.index
+    rke2_channel        = "stable"
+    rke2_url            = "https://${var.lb_ip}:9345"
+    clustername         = var.cluster_name
+    hcloud_token        = var.hcloud_token
+    network_id_encoded  = base64encode(var.network_id)
+    node_id             = "worker-${var.cluster_name}-${count.index}"
+    node_taint          = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
   })
 }
 
