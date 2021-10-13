@@ -10,7 +10,7 @@ write_files:
   permissions: "0600"
   owner: root:root
   content: |
-    server: https://${lb_address}:9345
+    server: ${rke2_url}
     token: "${rke2_cluster_secret}"
     kubelet-arg:
     - "cloud-provider=external"
@@ -25,7 +25,7 @@ write_files:
     # echo -e "[Match]\nMACAddress=$internal_mac\n[Link]\nName=priv" > /etc/systemd/network/80-internal.link
 
     # Wait for master to be up
-    while ! curl -sk -m 5 "https://${lb_address}:9345"; do sleep 1; done
+    while ! curl -sk -m 5 "${rke2_url}"; do sleep 1; done
 
     curl -fsSL https://raw.githubusercontent.com/rancher/rke2/master/install.sh --output install.sh
     chmod u+x install.sh

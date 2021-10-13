@@ -37,15 +37,13 @@ module "controlplane" {
 module "workers" {
   source = "./workers"
 
+  cluster_name = var.cluster_name
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   workers_number = var.workers_number
   worker_type = var.worker_type
+  subnet_id = module.base.nodes_subnet_id
 
   rke2_cluster_secret = random_string.rke2_token.result
-  cluster_name = var.cluster_name
-
-  lb_ip = module.base.controlplane_lb_ip
-  lb_id = module.base.controlplane_lb_id
-  subnet_id = module.base.nodes_subnet_id
+  rke2_url = "https://${module.base.controlplane_lb_ip}:9345"
 }

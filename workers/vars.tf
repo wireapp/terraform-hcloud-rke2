@@ -21,6 +21,11 @@ variable "rke2_cluster_secret" {
   description = "Cluster secret for rke2 cluster registration"
 }
 
+variable "rke2_url" {
+  type        = string
+  description = "URL to connect to ($RKE2_URL)"
+}
+
 variable "subnet_id" {
   type        = string
   description = "network id to put servers into"

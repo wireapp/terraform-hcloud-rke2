@@ -1,4 +1,3 @@
-
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
   count       = var.workers_number
@@ -11,11 +10,9 @@ resource "hcloud_server" "worker" {
   user_data   = templatefile("${path.module}/worker_userdata.tmpl", {
     extra_ssh_keys = []
     rke2_cluster_secret = var.rke2_cluster_secret
-    lb_address = var.lb_ip
-    agent_index = count.index
+    rke2_url = var.rke2_url
     rke2_channel = "stable"
-    clustername = var.cluster_name
-    lb_id = var.lb_id
+    agent_index = count.index
     node_id = "worker-${var.cluster_name}-${count.index}"
   })
 }
