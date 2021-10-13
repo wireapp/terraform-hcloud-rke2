@@ -21,7 +21,7 @@ module "controlplane" {
 
   rke2_cluster_secret = random_string.rke2_token.result
   cluster_name = var.cluster_name
-  
+
   lb_ip = module.base.controlplane_lb_ip
   lb_id = module.base.controlplane_lb_id
   network_id = module.base.nodes_network_id
@@ -44,7 +44,7 @@ module "workers" {
 
   rke2_cluster_secret = random_string.rke2_token.result
   cluster_name = var.cluster_name
-  
+
   lb_ip = module.base.controlplane_lb_ip
   lb_id = module.base.controlplane_lb_id
   subnet_id = module.base.nodes_subnet_id

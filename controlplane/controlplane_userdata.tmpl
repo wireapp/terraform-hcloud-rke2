@@ -14,12 +14,12 @@ write_files:
     server: https://${lb_address}:9345
     %{ endif }
     disable-cloud-controller: true
-    tls-san: 
+    tls-san:
       - ${lb_address}
       - ${lb_external_v4}
       - ${lb_external_v6}
     token: "${rke2_cluster_secret}"
-    node-taint: 
+    node-taint:
     ${node_taint}
     kube-apiserver-arg:
     - "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
@@ -320,7 +320,7 @@ write_files:
 
 runcmd:
 - apt-get update
-- apt-get install -y jq curl 
+- apt-get install -y jq curl
 # - apt-get install -y iptables git telnet vim software-properties-common resolvconf linux-headers-$(uname -r) jq curl open-iscsi
 # - echo "nameserver 1.1.1.1" > /etc/resolvconf/resolv.conf.d/tail
 # - echo "RateLimitIntervalSec=0" >> /etc/systemd/journald.conf
