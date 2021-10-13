@@ -12,7 +12,6 @@ resource "hcloud_server" "worker" {
     rke2_cluster_secret = var.rke2_cluster_secret
     rke2_url = var.rke2_url
     rke2_channel = "stable"
-    agent_index = count.index
     node_id = "worker-${var.cluster_name}-${count.index}"
   })
 }
