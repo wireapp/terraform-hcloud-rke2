@@ -13,10 +13,10 @@ resource "hcloud_server" "controlplane" {
   )
   user_data = templatefile("${path.module}/controlplane_userdata.tmpl", {
     rke2_cluster_secret = var.rke2_cluster_secret
-    tls_san             = [ var.lb_ip, var.lb_external_v4, var.lb_external_v6 ]
+    tls_san             = var.tls_san
     master_index        = count.index
     rke2_channel        = "stable"
-    rke2_url            = "https://${var.lb_ip}:9345"
+    rke2_url            = var.rke2_url
     hcloud_token        = var.hcloud_token
     network_id          = var.network_id
     node_id             = "${var.node_prefix}-${count.index}"

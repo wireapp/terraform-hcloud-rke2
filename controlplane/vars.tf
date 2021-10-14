@@ -31,19 +31,14 @@ variable "rke2_cluster_secret" {
   description = "Cluster secret for rke2 cluster registration"
 }
 
-variable "lb_ip" {
+variable "rke2_url" {
   type        = string
-  description = "ip of the lb to use to connect masters"
+  description = "URL to connect to ($RKE2_URL)"
 }
 
-variable "lb_external_v4" {
-  type        = string
-  description = "external v4 ip of the lb"
-}
-
-variable "lb_external_v6" {
-  type        = string
-  description = "external v4 ip of the lb"
+variable "tls_san" {
+  type = list(string)
+  description = "List of SAN to add to the kube-apiserver endpoint"
 }
 
 variable "network_id" {
