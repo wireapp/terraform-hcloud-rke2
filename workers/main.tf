@@ -1,7 +1,7 @@
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
   count       = var.node_count
-  name        = "${var.worker_prefix}-${count.index}"
+  name        = "${var.node_prefix}-${count.index}"
   image       = "ubuntu-20.04"
   server_type = var.node_type
   ssh_keys    = var.ssh_keys

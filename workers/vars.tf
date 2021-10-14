@@ -1,4 +1,4 @@
-variable "worker_prefix" {
+variable "node_prefix" {
   type = string
   description = "Common prefix to use for all workers (hostname and k8s node name)"
 }
@@ -9,7 +9,7 @@ variable "node_count" {
   default     = 3
 }
 
-variable "server_type" {
+variable "node_type" {
   type        = string
   description = "Hetzner machine type for worker nodes"
   default     = "cx51"
