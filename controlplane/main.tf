@@ -2,9 +2,9 @@
 # They optionally also run worker payloads.
 resource "hcloud_server" "controlplane" {
   count       = var.node_count
-  name        = "controlplane-${var.cluster_name}-${count.index}"
+  name        = "${var.node_prefix}-${count.index}"
   image       = "ubuntu-20.04"
-  server_type = var.server_type
+  server_type = var.node_type
   ssh_keys    = var.ssh_keys
   location    = "nbg1"
   labels = merge(
@@ -17,10 +17,9 @@ resource "hcloud_server" "controlplane" {
     master_index        = count.index
     rke2_channel        = "stable"
     rke2_url            = "https://${var.lb_ip}:9345"
-    clustername         = var.cluster_name
     hcloud_token        = var.hcloud_token
     network_id          = var.network_id
-    node_id             = "worker-${var.cluster_name}-${count.index}"
+    node_id             = "${var.node_prefix}-${count.index}"
     node_taint          = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
   })
 }

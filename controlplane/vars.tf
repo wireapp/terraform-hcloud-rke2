@@ -3,9 +3,9 @@ variable "hcloud_token" {
   description = "hetzner cloud api token. Used by the CCM, if the CCM is used"
 }
 
-variable "cluster_name" {
+variable "node_prefix" {
   type        = string
-  description = "name of the cluster"
+  description = "Common prefix to use for all workers (hostname and k8s node name)"
 }
 
 variable "node_count" {
@@ -14,18 +14,17 @@ variable "node_count" {
   default     = 3
 }
 
-variable "controlplane_has_worker" {
-  type        = bool
-  description = "Whether to register the controlplane node as a worker node too"
-  default     = false
-}
-
-variable "server_type" {
+variable "node_type" {
   type        = string
   description = "Hetzner machine type for controlplane nodes"
   default     = "cx21"
 }
 
+variable "controlplane_has_worker" {
+  type        = bool
+  description = "Whether to register the controlplane node as a worker node too"
+  default     = false
+}
 
 variable "rke2_cluster_secret" {
   type        = string

@@ -17,10 +17,10 @@ module "controlplane" {
   ssh_keys     = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   node_count  = var.controlplane_count
-  server_type = var.controlplane_type
+  node_prefix = "controlplane-${var.cluster_name}"
+  node_type = var.controlplane_type
 
   rke2_cluster_secret = random_string.rke2_token.result
-  cluster_name        = var.cluster_name
 
   network_id = module.base.nodes_network_id
   subnet_id  = module.base.nodes_subnet_id
@@ -38,9 +38,9 @@ module "workers" {
 
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
-  node_count    = var.worker_count
+  node_count  = var.worker_count
   node_prefix = "worker-${var.cluster_name}-"
-  server_type   = var.worker_type
+  node_type = var.worker_type
 
   subnet_id = module.base.nodes_subnet_id
 
