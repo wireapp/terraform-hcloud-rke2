@@ -1,7 +1,7 @@
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
   count       = var.worker_count
-  name        = "worker-${var.cluster_name}-${count.index}"
+  name        = "${var.worker_prefix}-${count.index}"
   image       = "ubuntu-20.04"
   server_type = var.worker_type
   ssh_keys    = var.ssh_keys
@@ -12,7 +12,6 @@ resource "hcloud_server" "worker" {
     rke2_cluster_secret = var.rke2_cluster_secret
     rke2_url = var.rke2_url
     rke2_channel = "stable"
-    node_id = "worker-${var.cluster_name}-${count.index}"
   })
 }
 

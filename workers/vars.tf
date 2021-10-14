@@ -1,6 +1,6 @@
-variable "cluster_name" {
-  type        = string
-  description = "name of the cluster"
+variable "worker_prefix" {
+  type = string
+  description = "Common prefix to use for all workers (hostname and k8s node name)"
 }
 
 variable "worker_count" {
