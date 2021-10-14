@@ -50,7 +50,7 @@ write_files:
     type: Opaque
     data:
       token: ${base64encode(hcloud_token)}
-      network: ${network_id_encoded}
+      network: ${base64encode(network_id)}
 - path: /var/lib/rancher/rke2/server/manifests/rke2-ingress-hcloud-lb.yaml
   permissions: "0600"
   owner: root:root

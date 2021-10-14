@@ -22,7 +22,7 @@ resource "hcloud_server" "controlplane" {
     rke2_url            = "https://${var.lb_ip}:9345"
     clustername         = var.cluster_name
     hcloud_token        = var.hcloud_token
-    network_id_encoded  = base64encode(var.network_id)
+    network_id          = var.network_id
     node_id             = "worker-${var.cluster_name}-${count.index}"
     node_taint          = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
   })
