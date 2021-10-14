@@ -20,11 +20,12 @@ variable "controlplane_has_worker" {
   default     = false
 }
 
-variable "controlplane_type" {
+variable "server_type" {
   type        = string
-  description = "Hetzner machine type for controlplane"
+  description = "Hetzner machine type for controlplane nodes"
   default     = "cx21"
 }
+
 
 variable "rke2_cluster_secret" {
   type        = string

@@ -9,9 +9,9 @@ variable "worker_count" {
   default     = 3
 }
 
-variable "worker_type" {
+variable "server_type" {
   type        = string
-  description = "Hetzner machine type for workers"
+  description = "Hetzner machine type for worker nodes"
   default     = "cx51"
 }
 

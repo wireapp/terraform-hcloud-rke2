@@ -34,7 +34,7 @@ variable "controlplane_has_worker" {
 }
 variable "controlplane_type" {
   type        = string
-  description = "Hetzner machine type for controlplane"
+  description = "Hetzner machine type for controlplane nodes"
   default     = "cx21"
 }
 
@@ -46,7 +46,7 @@ variable "worker_count" {
 
 variable "worker_type" {
   type        = string
-  description = "Hetzner machine type for workers"
+  description = "Hetzner machine type for worker nodes"
   default     = "cx51"
 }
 

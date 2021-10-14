@@ -3,7 +3,7 @@ resource "hcloud_server" "worker" {
   count       = var.worker_count
   name        = "${var.worker_prefix}-${count.index}"
   image       = "ubuntu-20.04"
-  server_type = var.worker_type
+  server_type = var.node_type
   ssh_keys    = var.ssh_keys
   location    = "nbg1"
   labels      = { "role-worker" = "1" }

@@ -4,7 +4,7 @@ resource "hcloud_server" "controlplane" {
   count       = var.controlplane_count
   name        = "controlplane-${var.cluster_name}-${count.index}"
   image       = "ubuntu-20.04"
-  server_type = var.controlplane_type
+  server_type = var.server_type
   ssh_keys    = var.ssh_keys
   location    = "nbg1"
   labels = merge(
