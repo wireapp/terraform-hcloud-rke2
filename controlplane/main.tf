@@ -11,16 +11,16 @@ resource "hcloud_server" "controlplane" {
     { "role-controlplane" = "1" },
     var.controlplane_has_worker ? { "role-worker" = "1" } : {}
   )
-  user_data = templatefile("${path.module}/controlplane_userdata.tmpl", {
-    rke2_cluster_secret = var.rke2_cluster_secret
-    tls_san             = var.tls_san
-    master_index        = count.index
-    rke2_channel        = "stable"
-    rke2_url            = var.rke2_url
+  user_data = templatefile("${path.module}/userdata.tmpl", {
     hcloud_token        = var.hcloud_token
+    master_index        = count.index
     network_id          = var.network_id
     node_id             = "${var.node_prefix}-${count.index}"
     node_taint          = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
+    rke2_channel        = "stable"
+    rke2_cluster_secret = var.rke2_cluster_secret
+    rke2_url            = var.rke2_url
+    tls_san             = var.tls_san
   })
 }
 
