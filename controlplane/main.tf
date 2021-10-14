@@ -12,7 +12,6 @@ resource "hcloud_server" "controlplane" {
     var.controlplane_has_worker ? { "role-worker" = "1" } : {}
   )
   user_data = templatefile("${path.module}/controlplane_userdata.tmpl", {
-    extra_ssh_keys      = []
     rke2_cluster_secret = var.rke2_cluster_secret
     tls_san             = [ var.lb_ip, var.lb_external_v4, var.lb_external_v6 ]
     master_index        = count.index

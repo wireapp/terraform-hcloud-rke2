@@ -8,7 +8,6 @@ resource "hcloud_server" "worker" {
   location    = "nbg1"
   labels      = { "role-worker" = "1" }
   user_data   = templatefile("${path.module}/worker_userdata.tmpl", {
-    extra_ssh_keys = []
     rke2_cluster_secret = var.rke2_cluster_secret
     rke2_url = var.rke2_url
     rke2_channel = "stable"
