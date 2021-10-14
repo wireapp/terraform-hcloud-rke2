@@ -3,7 +3,7 @@ variable "worker_prefix" {
   description = "Common prefix to use for all workers (hostname and k8s node name)"
 }
 
-variable "worker_count" {
+variable "node_count" {
   type        = number
   description = "How many pure worker nodes to deploy, in addition to controlplane nodes (where workload runs too if controlplane_has_worker)"
   default     = 3
