@@ -1,7 +1,7 @@
 # These are controlplane nodes, running etcd.
 # They optionally also run worker payloads.
 resource "hcloud_server" "controlplane" {
-  count       = var.controlplane_number
+  count       = var.controlplane_count
   name        = "controlplane-${var.cluster_name}-${count.index}"
   image       = "ubuntu-20.04"
   server_type = var.controlplane_type
@@ -30,7 +30,7 @@ resource "hcloud_server" "controlplane" {
 
 # Attach controlplane nodes to the private network.
 resource "hcloud_server_network" "controlplane" {
-  count     = var.controlplane_number
+  count     = var.controlplane_count
   server_id = hcloud_server.controlplane[count.index].id
   subnet_id = var.subnet_id
 }

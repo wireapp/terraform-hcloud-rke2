@@ -8,7 +8,7 @@ variable "cluster_name" {
   description = "name of the cluster"
 }
 
-variable "controlplane_number" {
+variable "controlplane_count" {
   type        = number
   description = "The number of controlplane nodes to deloy"
   default     = 3

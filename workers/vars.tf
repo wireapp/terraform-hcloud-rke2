@@ -3,7 +3,7 @@ variable "cluster_name" {
   description = "name of the cluster"
 }
 
-variable "workers_number" {
+variable "worker_count" {
   type        = number
   description = "How many pure worker nodes to deploy, in addition to controlplane nodes (where workload runs too if controlplane_has_worker)"
   default     = 3

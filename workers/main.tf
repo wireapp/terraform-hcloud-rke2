@@ -1,6 +1,6 @@
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
-  count       = var.workers_number
+  count       = var.worker_count
   name        = "worker-${var.cluster_name}-${count.index}"
   image       = "ubuntu-20.04"
   server_type = var.worker_type
@@ -20,7 +20,7 @@ resource "hcloud_server" "worker" {
 # Even though they might be able to reach other nodes through their public IPs,
 # the private network (on hetzner at least) is way faster.
 resource "hcloud_server_network" "worker" {
-  count     = var.workers_number
+  count     = var.worker_count
   server_id = hcloud_server.worker[count.index].id
   subnet_id = var.subnet_id
 }

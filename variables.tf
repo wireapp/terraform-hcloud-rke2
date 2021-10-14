@@ -21,7 +21,7 @@ variable "cluster_name" {
 }
 
 
-variable "controlplane_number" {
+variable "controlplane_count" {
   type        = number
   description = "The number of controlplane nodes to deloy"
   default     = 3
@@ -38,7 +38,7 @@ variable "controlplane_type" {
   default     = "cx21"
 }
 
-variable "workers_number" {
+variable "worker_count" {
   type        = number
   description = "How many pure worker nodes to deploy, in addition to controlplane nodes (where workload runs too if controlplane_has_worker)"
   default     = 3
