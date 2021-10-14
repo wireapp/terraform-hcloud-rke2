@@ -14,10 +14,7 @@ write_files:
     server: ${rke2_url}
     %{ endif }
     disable-cloud-controller: true
-    tls-san:
-      - ${lb_ip}
-      - ${lb_external_v4}
-      - ${lb_external_v6}
+    tls-san: ${jsonencode(tls_san)}
     token: "${rke2_cluster_secret}"
     node-taint:
     ${node_taint}

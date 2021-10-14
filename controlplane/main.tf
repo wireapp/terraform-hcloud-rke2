@@ -14,9 +14,7 @@ resource "hcloud_server" "controlplane" {
   user_data = templatefile("${path.module}/controlplane_userdata.tmpl", {
     extra_ssh_keys      = []
     rke2_cluster_secret = var.rke2_cluster_secret
-    lb_ip               = var.lb_ip
-    lb_external_v4      = var.lb_external_v4
-    lb_external_v6      = var.lb_external_v6
+    tls_san             = [ var.lb_ip, var.lb_external_v4, var.lb_external_v6 ]
     master_index        = count.index
     rke2_channel        = "stable"
     rke2_url            = "https://${var.lb_ip}:9345"
