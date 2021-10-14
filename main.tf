@@ -6,7 +6,7 @@ resource "random_string" "rke2_token" {
 module "base" {
   source = "./base"
 
-  cluster_name = var.cluster_name
+  cluster_name        = var.cluster_name
   hetzner_ccm_enabled = var.hetzner_ccm_enabled
 }
 
@@ -14,18 +14,18 @@ module "controlplane" {
   source = "./controlplane"
 
   hcloud_token = var.hcloud_token
-  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
+  ssh_keys     = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
   controlplane_count = var.controlplane_count
-  server_type = var.controlplane_type
+  server_type        = var.controlplane_type
 
   rke2_cluster_secret = random_string.rke2_token.result
-  cluster_name = var.cluster_name
+  cluster_name        = var.cluster_name
 
   network_id = module.base.nodes_network_id
-  subnet_id = module.base.nodes_subnet_id
+  subnet_id  = module.base.nodes_subnet_id
 
-  lb_ip = module.base.controlplane_lb_ip
+  lb_ip          = module.base.controlplane_lb_ip
   lb_external_v4 = module.base.controlplane_lb_ipv4
   lb_external_v6 = module.base.controlplane_lb_ipv6
 
@@ -36,14 +36,14 @@ module "controlplane" {
 module "workers" {
   source = "./workers"
 
-  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name],data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
+  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
 
-  worker_count = var.worker_count
+  worker_count  = var.worker_count
   worker_prefix = "worker-${var.cluster_name}-"
-  server_type = var.worker_type
+  server_type   = var.worker_type
 
   subnet_id = module.base.nodes_subnet_id
 
   rke2_cluster_secret = random_string.rke2_token.result
-  rke2_url = "https://${module.base.controlplane_lb_ip}:9345"
+  rke2_url            = "https://${module.base.controlplane_lb_ip}:9345"
 }
