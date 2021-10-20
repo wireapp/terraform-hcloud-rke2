@@ -3,6 +3,12 @@ resource "random_string" "rke2_token" {
   length = 64
 }
 
+locals {
+  # In case ssh_key_create is set to true, append the created ssh key name to
+  # the list of ssh keys, else just pass around var.ssh_keys.
+  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], var.ssh_keys) : var.ssh_keys
+}
+
 module "base" {
   source = "./base"
 
@@ -14,7 +20,7 @@ module "controlplane" {
   source = "./controlplane"
 
   hcloud_token = var.hcloud_token
-  ssh_keys     = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
+  ssh_keys     = local.ssh_keys
 
   node_count  = var.controlplane_count
   node_prefix = "controlplane-${var.cluster_name}"
@@ -39,7 +45,7 @@ module "controlplane" {
 module "workers" {
   source = "./workers"
 
-  ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], data.hcloud_ssh_keys.all_keys.ssh_keys.*.name) : data.hcloud_ssh_keys.all_keys.ssh_keys.*.name
+  ssh_keys = local.ssh_keys
 
   node_count  = var.worker_count
   node_prefix = "worker-${var.cluster_name}-"

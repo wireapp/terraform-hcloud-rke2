@@ -1,6 +1,17 @@
+variable "hcloud_token" {
+  type        = string
+  description = "hetzner api token with read permission to read lb state"
+}
+
+variable "ssh_keys" {
+  type        = list(string)
+  default     = []
+  description = "SSH key IDs or names which should be injected into the servers at creation time."
+}
+
 variable "ssh_key_create" {
   type        = bool
-  description = "Create a random SSH key which will be stored in terraform state"
+  description = "Create an (additional) random SSH key which will be stored in terraform state"
   default     = false
 }
 
@@ -8,11 +19,6 @@ variable "ssh_key_path" {
   type        = string
   description = "The path to persist the ssh key path to."
   default     = "id_root"
-}
-
-variable "hcloud_token" {
-  type        = string
-  description = "hetzner api token with read permission to read lb state"
 }
 
 variable "cluster_name" {

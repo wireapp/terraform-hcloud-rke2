@@ -32,7 +32,7 @@ variable "subnet_id" {
 }
 
 variable "ssh_keys" {
-  type        = list
+  type        = list(string)
   default     = []
-  description = "ssh keys to add to hetzner server instances"
+  description = "SSH key IDs or names which should be injected into the servers at creation time."
 }
