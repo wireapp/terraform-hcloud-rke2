@@ -1,0 +1,20 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: rke2-ingress-nginx
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    controller:
+      kind: Deployment
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 3
+      hostNetwork: false
+      service:
+        enabled: true
+        type: LoadBalancer
+        externalTrafficPolicy: Local
+        annotations:
+          load-balancer.hetzner.cloud/location: nbg1
