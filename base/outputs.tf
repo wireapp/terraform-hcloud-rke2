@@ -25,14 +25,3 @@ output "controlplane_lb_ipv6" {
   value       = hcloud_load_balancer.controlplane.ipv6
   description = "The IPv4 address of the load balancer exposing the controlplane."
 }
-
-output "ingress_lb_ipv4" {
-  value       = hcloud_load_balancer.ingress.*.ipv4
-  description = "The IPv4 address of the load balancer exposing the ingress."
-}
-
-output "ingress_lb_ipv6" {
-  value       = hcloud_load_balancer.ingress.*.ipv6
-  description = "The IPv4 address of the load balancer exposing the ingress."
-}
-

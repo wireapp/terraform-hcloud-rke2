@@ -23,9 +23,3 @@ variable "lb_type" {
   default     = "lb11"
   description = "Load balancer type"
 }
-
-variable "hetzner_ccm_enabled" {
-  type        = bool
-  description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
-  default     = true
-}

@@ -13,7 +13,6 @@ module "base" {
   source = "./base"
 
   cluster_name        = var.cluster_name
-  hetzner_ccm_enabled = var.hetzner_ccm_enabled
 }
 
 module "controlplane" {
