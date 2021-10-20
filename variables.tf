@@ -56,17 +56,10 @@ variable "worker_type" {
   default     = "cx51"
 }
 
-
 variable "hetzner_ccm_enabled" {
   type        = bool
   description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
   default     = true
-}
-
-variable "hetzner_ccm_version" {
-  type        = string
-  description = "Version of the hcloud-controller-manager"
-  default     = "v1.12.0"
 }
 
 variable "rancher2_import" {

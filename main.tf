@@ -39,7 +39,6 @@ module "controlplane" {
   ]
 
   hetzner_ccm_enabled = var.hetzner_ccm_enabled
-  hetzner_ccm_version = var.hetzner_ccm_version
 }
 
 module "workers" {

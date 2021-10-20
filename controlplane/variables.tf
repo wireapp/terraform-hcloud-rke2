@@ -57,12 +57,6 @@ variable "hetzner_ccm_enabled" {
   default     = true
 }
 
-variable "hetzner_ccm_version" {
-  type        = string
-  description = "Version of the hcloud-controller-manager"
-  default     = "v1.12.0"
-}
-
 variable "ssh_keys" {
   type        = list(string)
   default     = []
