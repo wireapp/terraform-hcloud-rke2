@@ -16,7 +16,7 @@ resource "local_file" "id_root" {
 }
 
 resource "hcloud_ssh_key" "root" {
-  name       = "root-${var.cluster_name}"
+  name       = "root"
   public_key = tls_private_key.root[0].public_key_openssh
   count      = var.ssh_key_create ? 1 : 0
 }

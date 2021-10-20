@@ -54,8 +54,8 @@ module "controlplane" {
   hetzner_ccm_enabled = var.hetzner_ccm_enabled
 
   node_count  = var.controlplane_count
-  node_prefix = "controlplane-${var.cluster_name}"
-  node_type = var.controlplane_type
+  node_prefix = "controlplane"
+  node_type   = var.controlplane_type
 
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
@@ -76,8 +76,8 @@ module "workers" {
   ssh_keys = local.ssh_keys
 
   node_count  = var.worker_count
-  node_prefix = "worker-${var.cluster_name}-"
-  node_type = var.worker_type
+  node_prefix = "worker"
+  node_type   = var.worker_type
 
   node_subnet_id = hcloud_network_subnet.worker.id
 

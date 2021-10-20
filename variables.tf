@@ -16,12 +16,6 @@ variable "ssh_key_path" {
   default     = "id_root"
 }
 
-variable "cluster_name" {
-  type        = string
-  description = "name of the cluster"
-}
-
-
 variable "controlplane_count" {
   type        = number
   description = "The number of controlplane nodes to deloy"
