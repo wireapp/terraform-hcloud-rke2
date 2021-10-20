@@ -14,9 +14,3 @@ variable "subnetwork" {
   default     = "10.0.0.0/24"
   description = "subnetwork to use"
 }
-
-variable "lb_type" {
-  type        = string
-  default     = "lb11"
-  description = "Load balancer type"
-}
