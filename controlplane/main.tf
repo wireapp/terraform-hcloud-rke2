@@ -1,5 +1,5 @@
 locals {
-  node_taint = !(var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : []
+  node_taint = (var.controlplane_has_worker) ? [] : ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/control-plane=true:NoSchedule"]
 
   rke2_config_seed = {
     # TODO: check if we want disable-cloud-controller, or cloud-provider=external
