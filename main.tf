@@ -9,17 +9,40 @@ locals {
   ssh_keys = var.ssh_key_create ? concat([hcloud_ssh_key.root[0].name], var.ssh_keys) : var.ssh_keys
 }
 
-module "base" {
-  source = "./base"
-
-  cluster_name = var.cluster_name
+# Create a hcloud network
+resource "hcloud_network" "nodes" {
+  name     = "nodes"
+  ip_range = "10.0.0.0/8"
 }
 
+# Create separate subnets for the loadbalancer, controlplanes and workers
+resource "hcloud_network_subnet" "lb" {
+  network_id   = hcloud_network.nodes.id
+  type         = "cloud"
+  network_zone = "eu-central"
+  ip_range     = "10.0.0.0/24"
+}
+
+resource "hcloud_network_subnet" "controlplane" {
+  network_id   = hcloud_network.nodes.id
+  type         = "cloud"
+  network_zone = "eu-central"
+  ip_range     = "10.0.1.0/24"
+}
+
+resource "hcloud_network_subnet" "worker" {
+  network_id   = hcloud_network.nodes.id
+  type         = "cloud"
+  network_zone = "eu-central"
+  ip_range     = "10.0.2.0/24"
+}
+
+# Create a load balancer in its subnet
 module "controlplane_lb" {
   source = "./controlplane-lb"
 
   lb_type      = "lb11"
-  lb_subnet_id = module.base.nodes_subnet_id
+  lb_subnet_id = hcloud_network_subnet.lb.id
 }
 
 module "controlplane" {
@@ -37,8 +60,8 @@ module "controlplane" {
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
 
-  network_id     = module.base.nodes_network_id
-  node_subnet_id = module.base.nodes_subnet_id
+  network_id     = hcloud_network.nodes.id
+  node_subnet_id = hcloud_network_subnet.controlplane.id
 
   tls_san = [
     module.controlplane_lb.private_ipv4,
@@ -56,7 +79,7 @@ module "workers" {
   node_prefix = "worker-${var.cluster_name}-"
   node_type = var.worker_type
 
-  node_subnet_id = module.base.nodes_subnet_id
+  node_subnet_id = hcloud_network_subnet.worker.id
 
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
