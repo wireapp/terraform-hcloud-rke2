@@ -61,10 +61,3 @@ variable "hetzner_ccm_enabled" {
   description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
   default     = true
 }
-
-variable "rancher2_import" {
-  type        = string
-  description = "Rancher 2 import token"
-  default     = null
-}
-
