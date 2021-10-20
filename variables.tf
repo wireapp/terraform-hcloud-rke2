@@ -7,7 +7,7 @@ variable "ssh_keys" {
 variable "ssh_key_create" {
   type        = bool
   description = "Create an (additional) random SSH key which will be stored in terraform state"
-  default     = false
+  default     = true
 }
 
 variable "ssh_key_path" {
