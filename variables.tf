@@ -1,8 +1,3 @@
-variable "hcloud_token" {
-  type        = string
-  description = "hetzner api token with read permission to read lb state"
-}
-
 variable "ssh_keys" {
   type        = list(string)
   default     = []
@@ -54,6 +49,12 @@ variable "worker_type" {
   type        = string
   description = "Hetzner machine type for worker nodes"
   default     = "cx51"
+}
+
+variable "hcloud_token" {
+  type        = string
+  default     = ""
+  description = "Hetzner API token to configure the CCM with. Only need to be set if hetzner_ccm_enabled is set to true"
 }
 
 variable "hetzner_ccm_enabled" {

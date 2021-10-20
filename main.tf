@@ -19,8 +19,10 @@ module "base" {
 module "controlplane" {
   source = "./controlplane"
 
-  hcloud_token = var.hcloud_token
-  ssh_keys     = local.ssh_keys
+  ssh_keys = local.ssh_keys
+
+  hcloud_token        = var.hcloud_token
+  hetzner_ccm_enabled = var.hetzner_ccm_enabled
 
   node_count  = var.controlplane_count
   node_prefix = "controlplane-${var.cluster_name}"
@@ -37,8 +39,6 @@ module "controlplane" {
     module.base.controlplane_lb_ipv4,
     module.base.controlplane_lb_ipv6
   ]
-
-  hetzner_ccm_enabled = var.hetzner_ccm_enabled
 }
 
 module "workers" {
