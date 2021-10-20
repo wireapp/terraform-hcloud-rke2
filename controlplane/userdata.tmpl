@@ -29,6 +29,7 @@ write_files:
       valuesContent: |-
         flannel:
           iface: "ens0"
+%{ if hetzner_ccm_enabled }
 - path: /var/lib/rancher/rke2/server/manifests/hcloud-secret.yaml
   permissions: "0600"
   owner: root:root
@@ -156,6 +157,7 @@ write_files:
                     secretKeyRef:
                       name: hcloud
                       key: network
+%{ endif }
 - path: /var/lib/rancher/rke2/server/manifests/system-upgrade-controller.yaml
   permissions: "0600"
   owner: root:root

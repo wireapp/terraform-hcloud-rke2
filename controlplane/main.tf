@@ -13,6 +13,7 @@ resource "hcloud_server" "controlplane" {
   )
   user_data = templatefile("${path.module}/userdata.tmpl", {
     hcloud_token        = var.hcloud_token
+    hetzner_ccm_enabled = var.hetzner_ccm_enabled
     master_index        = count.index
     network_id          = var.network_id
     node_id             = "${var.node_prefix}-${count.index}"
