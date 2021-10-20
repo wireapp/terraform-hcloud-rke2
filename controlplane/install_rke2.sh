@@ -13,9 +13,8 @@ if jq -re .server /etc/rancher/rke2/config.yaml; then
   while ! curl -sk -m 5 $(jq -re .server /etc/rancher/rke2/config.yaml); do sleep 1; done
 fi
 
-curl -fsSL https://raw.githubusercontent.com/rancher/rke2/master/install.sh --output install.sh
-chmod u+x install.sh
+export INSTALL_RKE2_TYPE=server
+curl -sfL https://get.rke2.io | sh -
 
-INSTALL_RKE2_METHOD='tar' INSTALL_RKE2_TYPE=server INSTALL_RKE2_CHANNEL="${rke2_channel}" ./install.sh
 systemctl enable rke2-server
 systemctl start rke2-server

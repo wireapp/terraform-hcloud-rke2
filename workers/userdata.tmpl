@@ -21,9 +21,9 @@ write_files:
     # Wait for master to be up
     while ! curl -sk -m 5 "${rke2_url}"; do sleep 1; done
 
-    curl -fsSL https://raw.githubusercontent.com/rancher/rke2/master/install.sh --output install.sh
-    chmod u+x install.sh
-    INSTALL_RKE2_METHOD='tar' INSTALL_RKE2_TYPE=agent INSTALL_RKE2_CHANNEL="${rke2_channel}" ./install.sh
+    export INSTALL_RKE2_TYPE=agent
+    curl -sfL https://get.rke2.io | sh -
+
     systemctl enable rke2-agent
     systemctl start rke2-agent
     sleep 20
