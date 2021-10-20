@@ -1,7 +1,7 @@
 
 
 output "controlplane_lb_id" {
-  value = hcloud_load_balancer_network.controlplane.id
+  value       = hcloud_load_balancer_network.controlplane.id
   description = "Internal load balancer ip."
 }
 

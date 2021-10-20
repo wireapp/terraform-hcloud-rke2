@@ -7,14 +7,14 @@ resource "hcloud_network_subnet" "nodes" {
   network_id   = hcloud_network.nodes.id
   type         = "cloud"
   network_zone = var.networkzone
-  ip_range   = var.subnetwork
+  ip_range     = var.subnetwork
 }
 
 # This creates a load balancer for our controlplane.
 resource "hcloud_load_balancer" "controlplane" {
   name               = "controlplane-${var.cluster_name}"
   load_balancer_type = var.lb_type
-  network_zone = var.networkzone
+  network_zone       = var.networkzone
   # location           = "nbg1"
 }
 
@@ -63,14 +63,14 @@ resource "hcloud_load_balancer" "ingress" {
   name               = "ingress-${var.cluster_name}"
   load_balancer_type = "lb11"
   location           = "nbg1"
-  count = var.hetzner_ccm_enabled ? 0 : 1
+  count              = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This attaches the load balancer to the network.
 resource "hcloud_load_balancer_network" "ingress" {
   load_balancer_id = hcloud_load_balancer.ingress[0].id
   network_id       = hcloud_network.nodes.id
-  count = var.hetzner_ccm_enabled ? 0 : 1
+  count            = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This adds a new ingress target to the loadbalancer, which balances among
@@ -95,7 +95,7 @@ resource "hcloud_load_balancer_service" "ingress_http" {
   protocol         = "tcp"
   listen_port      = "80"
   destination_port = "80"
-  count = var.hetzner_ccm_enabled ? 0 : 1
+  count            = var.hetzner_ccm_enabled ? 0 : 1
 }
 
 # This registers a service at port 443 (https)
@@ -104,6 +104,6 @@ resource "hcloud_load_balancer_service" "ingress_rke_management" {
   protocol         = "tcp"
   listen_port      = "443"
   destination_port = "443"
-  count = var.hetzner_ccm_enabled ? 0 : 1
+  count            = var.hetzner_ccm_enabled ? 0 : 1
 }
 
