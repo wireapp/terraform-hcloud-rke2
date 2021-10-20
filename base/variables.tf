@@ -15,11 +15,6 @@ variable "subnetwork" {
   default     = "10.0.0.0/24"
   description = "subnetwork to use"
 }
-variable "networkzone" {
-  type        = string
-  default     = "eu-central"
-  description = "hetzner netzwork zone"
-}
 variable "internalbalancerip" {
   type        = string
   default     = "10.0.0.2"

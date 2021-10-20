@@ -6,7 +6,7 @@ resource "hcloud_network" "nodes" {
 resource "hcloud_network_subnet" "nodes" {
   network_id   = hcloud_network.nodes.id
   type         = "cloud"
-  network_zone = var.networkzone
+  network_zone = "eu-central"
   ip_range     = var.subnetwork
 }
 
@@ -14,8 +14,8 @@ resource "hcloud_network_subnet" "nodes" {
 resource "hcloud_load_balancer" "controlplane" {
   name               = "controlplane-${var.cluster_name}"
   load_balancer_type = var.lb_type
-  network_zone       = var.networkzone
-  # location           = "nbg1"
+  network_zone       = "eu-central"
+  location           = "nbg1"
 }
 
 # This attaches the load balancer to the controlplane network.
