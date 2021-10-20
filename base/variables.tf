@@ -1,5 +1,3 @@
-variable "hcloud_token" {}
-
 variable "cluster_name" {
   type        = string
   description = "name of the cluster"
