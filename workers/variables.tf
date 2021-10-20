@@ -1,5 +1,5 @@
 variable "node_prefix" {
-  type = string
+  type        = string
   description = "Common prefix to use for all workers (hostname and k8s node name)"
 }
 
@@ -21,7 +21,7 @@ variable "node_type" {
 }
 
 variable "rke2_cluster_secret" {
-  type        = string
+  type = string
 
   description = "Cluster secret for rke2 cluster registration"
 }
