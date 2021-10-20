@@ -43,12 +43,12 @@ variable "tls_san" {
 
 variable "network_id" {
   type        = string
-  description = "network id to put servers into"
+  description = "Network ID used. Will be passed to the CCM."
 }
 
 variable "subnet_id" {
   type        = string
-  description = "subnet id to put servers into"
+  description = "Subnet ID to attach servers to"
 }
 
 variable "hetzner_ccm_enabled" {
