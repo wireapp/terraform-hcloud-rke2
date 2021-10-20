@@ -31,12 +31,4 @@ write_files:
       ln -sf $bin /usr/local/bin/$(basename $bin)
     done
 runcmd:
-- apt-get update
-- apt-get install -y jq curl
-# - apt-get install -y iptables git vim software-properties-common resolvconf linux-headers-$(uname -r) jq curl open-iscsi
-# - echo "nameserver 1.1.1.1" > /etc/resolvconf/resolv.conf.d/tail
-# - echo "RateLimitIntervalSec=0" >> /etc/systemd/journald.conf
-# - echo "RateLimitBurst=0" >> /etc/systemd/journald.conf
-# - systemctl restart systemd-journald.service
-# - systemctl start resolvconf
 - /opt/rke2/run_rke2.sh
