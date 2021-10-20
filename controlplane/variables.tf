@@ -42,7 +42,7 @@ variable "rke2_url" {
 }
 
 variable "tls_san" {
-  type = list(string)
+  type        = list(string)
   description = "List of SAN to add to the kube-apiserver endpoint"
 }
 

@@ -17,7 +17,7 @@ resource "hcloud_server" "controlplane" {
     master_index        = count.index
     network_id          = var.network_id
     node_id             = "${var.node_prefix}-${count.index}"
-    node_taint          = yamlencode((! var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
+    node_taint          = yamlencode((!var.controlplane_has_worker) ? ["node-role.kubernetes.io/etcd=true:NoExecute", "node-role.kubernetes.io/controlplane=true:NoSchedule"] : [])
     rke2_channel        = "stable"
     rke2_cluster_secret = var.rke2_cluster_secret
     rke2_url            = var.rke2_url
