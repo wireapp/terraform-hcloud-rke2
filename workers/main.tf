@@ -22,11 +22,3 @@ resource "hcloud_server_network" "worker" {
   server_id = hcloud_server.worker[count.index].id
   subnet_id = var.subnet_id
 }
-
-output "worker_ipv4s" {
-  value = hcloud_server.worker[*].ipv4_address
-}
-
-output "worker_ipv6s" {
-  value = hcloud_server.worker[*].ipv6_address
-}

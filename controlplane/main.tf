@@ -31,11 +31,3 @@ resource "hcloud_server_network" "controlplane" {
   server_id = hcloud_server.controlplane[count.index].id
   subnet_id = var.subnet_id
 }
-
-output "controlplane_ipv4s" {
-  value = hcloud_server.controlplane[*].ipv4_address
-}
-
-output "controlplane_ipv6s" {
-  value = hcloud_server.controlplane[*].ipv6_address
-}
