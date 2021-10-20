@@ -9,6 +9,11 @@ variable "node_count" {
   default     = 3
 }
 
+variable "node_subnet_id" {
+  type        = string
+  description = "network id to put servers into"
+}
+
 variable "node_type" {
   type        = string
   description = "Hetzner machine type for worker nodes"
@@ -24,11 +29,6 @@ variable "rke2_cluster_secret" {
 variable "rke2_url" {
   type        = string
   description = "URL to connect to ($RKE2_URL)"
-}
-
-variable "subnet_id" {
-  type        = string
-  description = "network id to put servers into"
 }
 
 variable "ssh_keys" {

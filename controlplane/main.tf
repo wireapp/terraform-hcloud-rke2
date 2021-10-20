@@ -29,5 +29,5 @@ resource "hcloud_server" "controlplane" {
 resource "hcloud_server_network" "controlplane" {
   count     = var.node_count
   server_id = hcloud_server.controlplane[count.index].id
-  subnet_id = var.subnet_id
+  subnet_id = var.node_subnet_id
 }

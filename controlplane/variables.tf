@@ -14,6 +14,11 @@ variable "node_count" {
   default     = 3
 }
 
+variable "node_subnet_id" {
+  type        = string
+  description = "network id to put servers into"
+}
+
 variable "node_type" {
   type        = string
   description = "Hetzner machine type for controlplane nodes"
@@ -44,11 +49,6 @@ variable "tls_san" {
 variable "network_id" {
   type        = string
   description = "Network ID used. Will be passed to the CCM."
-}
-
-variable "subnet_id" {
-  type        = string
-  description = "Subnet ID to attach servers to"
 }
 
 variable "hetzner_ccm_enabled" {

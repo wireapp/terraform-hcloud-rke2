@@ -19,7 +19,7 @@ module "controlplane_lb" {
   source = "./controlplane-lb"
 
   lb_type   = "lb11"
-  subnet_id = module.base/nodes_subnet_id
+  subnet_id = module.base.nodes_subnet_id
 }
 
 module "controlplane" {
@@ -37,8 +37,8 @@ module "controlplane" {
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
 
-  network_id = module.base.nodes_network_id
-  subnet_id  = module.base.nodes_subnet_id
+  network_id     = module.base.nodes_network_id
+  node_subnet_id = module.base.nodes_subnet_id
 
   tls_san = [
     module.controlplane_lb.private_ipv4,
@@ -56,7 +56,7 @@ module "workers" {
   node_prefix = "worker-${var.cluster_name}-"
   node_type = var.worker_type
 
-  subnet_id = module.base.nodes_subnet_id
+  node_subnet_id = module.base.nodes_subnet_id
 
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
