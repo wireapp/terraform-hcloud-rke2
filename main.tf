@@ -18,8 +18,8 @@ module "base" {
 module "controlplane_lb" {
   source = "./controlplane-lb"
 
-  lb_type   = "lb11"
-  subnet_id = module.base.nodes_subnet_id
+  lb_type      = "lb11"
+  lb_subnet_id = module.base.nodes_subnet_id
 }
 
 module "controlplane" {

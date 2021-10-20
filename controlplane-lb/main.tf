@@ -8,7 +8,7 @@ resource "hcloud_load_balancer" "controlplane" {
 # This attaches the load balancer to the controlplane network.
 resource "hcloud_load_balancer_network" "controlplane" {
   load_balancer_id = hcloud_load_balancer.controlplane.id
-  subnet_id        = var.subnet_id
+  subnet_id        = var.lb_subnet_id
 }
 
 # This adds a new controlplane target to the loadbalancer, which balances among

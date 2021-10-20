@@ -1,6 +1,6 @@
-variable "subnet_id" {
+variable "lb_subnet_id" {
   type        = string
-  description = "ID of the sub-network which should be added to the load balancer"
+  description = "ID of the subnet the load balancer should be attached to"
 }
 
 variable "lb_type" {
