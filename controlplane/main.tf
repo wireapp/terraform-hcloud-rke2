@@ -2,7 +2,6 @@ locals {
   node_taint = (var.controlplane_has_worker) ? [] : ["node-role.kubernetes.io/control-plane=true:NoSchedule"]
 
   rke2_config_seed = {
-    # TODO: check if we want disable-cloud-controller, or cloud-provider=external
     "disable-cloud-controller" = var.hetzner_ccm_enabled,
     "tls-san"                  = var.tls_san,
     "token"                    = var.rke2_cluster_secret,
@@ -10,10 +9,9 @@ locals {
     "kube-apiserver-arg" = [
       "kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname"
     ]
-    "kubelet-arg" = [
-      # TODO: check if we want disable-cloud-controller, or cloud-provider=external (also needs to be conditional)
+    "kubelet-arg" = (var.hetzner_ccm_enabled) ? [
       "cloud-provider=external"
-    ]
+    ] : []
   }
 
   # Same as rke2_config_seed, except server is set

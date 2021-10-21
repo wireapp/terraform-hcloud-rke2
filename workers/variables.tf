@@ -20,6 +20,12 @@ variable "node_type" {
   default     = "cx51"
 }
 
+variable "hetzner_ccm_enabled" {
+  type        = bool
+  description = "Whether nodes should be configured to use the CCM"
+  default     = true
+}
+
 variable "rke2_cluster_secret" {
   type = string
 

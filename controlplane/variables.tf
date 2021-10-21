@@ -53,7 +53,7 @@ variable "network_id" {
 
 variable "hetzner_ccm_enabled" {
   type        = bool
-  description = "Whether to set up hcloud-cloud-controller-manager and configure the nginx ingress controller to make use of it"
+  description = "When enabled, this will deploy hcloud-cloud-controller-manager (with network and load balancer support), and configure control plane nodes to use it as a CCM"
   default     = true
 }
 

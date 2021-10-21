@@ -2,9 +2,9 @@ locals {
   rke2_config = {
     "server"      = var.rke2_url
     "token"       = var.rke2_cluster_secret
-    "kubelet-arg" = [
+    "kubelet-arg" = (var.hetzner_ccm_enabled) ? [
       "cloud-provider=external"
-    ]
+    ] : []
   }
 
   cloud_config = {

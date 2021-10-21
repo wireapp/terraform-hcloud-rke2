@@ -81,6 +81,8 @@ module "workers" {
 
   node_subnet_id = hcloud_network_subnet.worker.id
 
+  hetzner_ccm_enabled = var.hetzner_ccm_enabled
+
   rke2_cluster_secret = random_string.rke2_token.result
   rke2_url            = "https://${module.controlplane_lb.private_ipv4}:9345"
 }
