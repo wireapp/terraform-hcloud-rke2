@@ -27,7 +27,6 @@ SSH into the box to check the cluster status:
 
 ```shell
 $ ssh -i id_root root@<controlplane-0>
-$ export KUBECONFIG=/etc/rancher/rke2/rke2.yaml PATH=$PATH:/var/lib/rancher/rke2/bin
 $ kubectl get nodes
 ```
 

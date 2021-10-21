@@ -26,3 +26,6 @@ curl -sfL https://get.rke2.io | sh -
 
 systemctl enable rke2-server
 systemctl start rke2-server
+
+# Configure /root/.profile to add rke2 binaries to $PATH and set $KUBECONFIG
+echo 'export KUBECONFIG=/etc/rancher/rke2/rke2.yaml PATH=$PATH:/var/lib/rancher/rke2/bin' >> /root/.profile
