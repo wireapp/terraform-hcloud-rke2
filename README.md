@@ -44,3 +44,11 @@ this needs to be configured manually.
 
 The controller manager is deployed [with networks support](https://github.com/hetznercloud/hcloud-cloud-controller-manager/blob/master/docs/deploy_with_networks.md),
 so it uses the (more reliable) Hetzner private network.
+
+## Caveats
+Keep in mind the first control-plane node will always recreate a new cluster
+from scratch.
+
+A better fix for this would be to populate the same config for all master
+nodes, but strip the `server` field from the config if something is already
+reachable on that URL.
