@@ -21,7 +21,6 @@ locals {
     server = var.rke2_url
   })
 
-  # TODO: check if we need to populate rancher manifests on all controlplane nodes
   cloud_config_seed = {
     write_files = concat([
       { path        = "/etc/rancher/rke2/config.yaml",
