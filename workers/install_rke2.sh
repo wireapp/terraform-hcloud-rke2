@@ -1,6 +1,8 @@
 #!/bin/bash
 internal_ip=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "ip:" | head -n 1| cut -d ":" -f2 | xargs)
 internal_mac=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "mac_address:" | head -n 1 | awk '{print $2}')
+internal_network=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "network:" | head -n 1 | awk '{print $2}')
+internal_gateway=$(curl -sfL http://169.254.169.254/hetzner/v1/metadata/private-networks | grep "gateway:" | head -n 1 | awk '{print $2}')
 
 # Add a .link file renaming the private interface to "priv"
 echo -e "[Match]\nMACAddress=$internal_mac\n[Link]\nName=priv" > /etc/systemd/network/80-private.link
@@ -10,6 +12,10 @@ internal_if=$(ip -br link | awk "\$3 ~ /$internal_mac/ {print \$1}")
 ip l set down dev $internal_if
 ip l set $internal_if name priv
 ip l set up dev priv
+
+# Restore the route to the rest of the private network
+ip r add $internal_gateway dev priv
+ip r add $internal_network via $internal_gateway dev priv
 
 # Add the internal ip as node-ip to rancher config
 jq --arg nodeip $internal_ip '. + {"node-ip": $nodeip}' < /etc/rancher/rke2/config.yaml > /etc/rancher/rke2/config.yaml.new
