@@ -1,3 +1,34 @@
+locals {
+  rke2_config = {
+    "server"      = var.rke2_url
+    "token"       = var.rke2_cluster_secret
+    "kubelet-arg" = [
+      "cloud-provider=external"
+    ]
+  }
+
+  cloud_config = {
+    write_files = [
+      { path        = "/etc/rancher/rke2/config.yaml",
+        permissions = "0600",
+        owner       = "root:root",
+        content     = jsonencode(local.rke2_config)
+      },
+      { path        = "/opt/rke2/install_rke2.sh",
+        permissions = "0755",
+        owner       = "root:root",
+        content     = file("${path.module}/install_rke2.sh")
+      }
+    ]
+
+    runcmd = [
+      "apt-get update",
+      "apt-get install -y jq",
+      "/opt/rke2/install_rke2.sh",
+    ]
+  }
+}
+
 # These are worker-only nodes
 resource "hcloud_server" "worker" {
   count       = var.node_count
@@ -7,10 +38,7 @@ resource "hcloud_server" "worker" {
   ssh_keys    = var.ssh_keys
   location    = "nbg1"
   labels      = { "role-worker" = "1" }
-  user_data = templatefile("${path.module}/userdata.tmpl", {
-    rke2_cluster_secret = var.rke2_cluster_secret
-    rke2_url            = var.rke2_url
-  })
+  user_data   = "#cloud-config\n${jsonencode(local.cloud_config)}"
 }
 
 # Attach worker nodes to the private network.
