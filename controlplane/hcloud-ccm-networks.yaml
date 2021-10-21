@@ -52,9 +52,6 @@ spec:
           effect: NoSchedule
         - key: "node-role.kubernetes.io/control-plane"
           effect: NoSchedule
-        - key: "node-role.kubernetes.io/etcd"
-          operator: "Exists"
-          effect: "NoExecute"
         - key: "node.kubernetes.io/not-ready"
           effect: "NoSchedule"
       hostNetwork: true
