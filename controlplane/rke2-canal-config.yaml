@@ -6,4 +6,4 @@ metadata:
 spec:
   valuesContent: |-
     flannel:
-      iface: "ens0"
+      iface: "priv"
