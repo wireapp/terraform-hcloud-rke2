@@ -54,6 +54,7 @@ locals {
           content = templatefile("${path.module}/hcloud-secret.yaml.tpl", {
             hcloud_token = var.hcloud_token,
             network_id   = var.network_id,
+            network_zone = "eu-central" # spans nbg1, fsn1, hel1
           }),
         },
         { path        = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-hcloud-lb.yaml",

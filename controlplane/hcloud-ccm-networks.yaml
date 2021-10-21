@@ -86,3 +86,10 @@ spec:
                 secretKeyRef:
                   name: hcloud
                   key: network
+            - name: HCLOUD_LOAD_BALANCERS_NETWORK_ZONE
+              valueFrom:
+                secretKeyRef:
+                  name: hcloud
+                  key: network_zone
+            - name: HCLOUD_LOAD_BALANCERS_USE_PRIVATE_IP
+              value: "true"
