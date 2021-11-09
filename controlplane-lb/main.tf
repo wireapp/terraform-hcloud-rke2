@@ -1,14 +1,14 @@
 # This creates a load balancer for our controlplane.
 resource "hcloud_load_balancer" "controlplane" {
-  name               = "controlplane-${random_pet.cluster_name.id}"
-  load_balancer_type = "lb11"
-  location           = "nbg1"
+  name               = "controlplane"
+  load_balancer_type = var.lb_type
+  network_zone       = "eu-central"
 }
 
 # This attaches the load balancer to the controlplane network.
 resource "hcloud_load_balancer_network" "controlplane" {
   load_balancer_id = hcloud_load_balancer.controlplane.id
-  network_id       = hcloud_network.nodes.id
+  subnet_id        = var.lb_subnet_id
 }
 
 # This adds a new controlplane target to the loadbalancer, which balances among
@@ -34,20 +34,10 @@ resource "hcloud_load_balancer_service" "controlplane_service" {
   destination_port = "6443"
 }
 
-# This registers a service at port 9345 (rke management port)
+# This registers a service at port 9345 (rke2 management port)
 resource "hcloud_load_balancer_service" "controlplane_rke_management" {
   load_balancer_id = hcloud_load_balancer.controlplane.id
   protocol         = "tcp"
   listen_port      = "9345"
   destination_port = "9345"
-}
-
-output "controlplane_lb_ipv4" {
-  value       = hcloud_load_balancer.controlplane.ipv4
-  description = "The IPv4 address of the load balancer exposing the controlplane."
-}
-
-output "controlplane_lb_ipv6" {
-  value       = hcloud_load_balancer.controlplane.ipv6
-  description = "The IPv4 address of the load balancer exposing the controlplane."
 }
