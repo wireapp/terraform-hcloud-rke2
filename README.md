@@ -2,8 +2,8 @@
 
 This spins up a RKE2 cluster on hcloud.
 
-The files in the root module intended to show how the individual modules can be
-tied together.
+The files in the root module are intended to show how the individual modules
+can be tied together.
 
 In your own projects, most likely you'd like to instantiate the submodules from
 your projects directly.
