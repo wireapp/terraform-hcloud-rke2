@@ -25,6 +25,12 @@ variable "node_type" {
   default     = "cx21"
 }
 
+variable "seed_node" {
+  type        = bool
+  description = "Whether the first node will be a seed node. Needs to be set to true initially, and set to false once the cluster was deployed initially, to prevent it from recreating a (second) cluster on redeploy"
+  default     = false
+}
+
 variable "controlplane_has_worker" {
   type        = bool
   description = "Whether to register the controlplane node as a worker node too"

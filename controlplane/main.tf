@@ -111,7 +111,7 @@ resource "hcloud_server" "controlplane" {
     { "role-controlplane" = "1" },
     var.controlplane_has_worker ? { "role-worker" = "1" } : {}
   )
-  user_data = count.index == 0 ? "#cloud-config\n${jsonencode(local.cloud_config_seed)}" : "#cloud-config\n${jsonencode(local.cloud_config)}"
+  user_data = count.index == 0 && var.seed_node ? "#cloud-config\n${jsonencode(local.cloud_config_seed)}" : "#cloud-config\n${jsonencode(local.cloud_config)}"
 }
 
 # Attach controlplane nodes to the private network.

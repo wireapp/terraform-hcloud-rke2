@@ -48,7 +48,8 @@ module "controlplane_lb" {
 module "controlplane" {
   source = "./controlplane"
 
-  ssh_keys = local.ssh_keys
+  ssh_keys  = local.ssh_keys
+  seed_node = true # needs to be set to false once deployed initially!
 
   hcloud_token        = var.hcloud_token
   hetzner_ccm_enabled = var.hetzner_ccm_enabled
