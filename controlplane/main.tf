@@ -14,10 +14,44 @@ locals {
     ] : []
   }
 
-  # Same as rke2_config_seed, except server is set
-  rke2_config = merge(local.rke2_config_seed, {
-    server = var.rke2_url
-  })
+  auto_deplying_manifests = concat([
+    { path        = "/var/lib/rancher/rke2/server/manifests/rke2-canal-config.yaml",
+      permissions = "0600",
+      owner       = "root:root",
+      content     = file("${path.module}/rke2-canal-config.yaml"),
+    }],
+
+    # system-upgrade-controller
+    [
+      { path        = "/var/lib/rancher/rke2/server/manifests/system-upgrade-controller.yaml",
+        permissions = "0600",
+        owner       = "root:root",
+        content     = file("${path.module}/system-upgrade-controller.yaml"),
+      }
+    ],
+
+    # hetzner ccm
+    (!var.hetzner_ccm_enabled) ? [] : [
+      { path        = "/var/lib/rancher/rke2/server/manifests/hcloud-secret.yaml",
+        permissions = "0600",
+        owner       = "root:root",
+        content = templatefile("${path.module}/hcloud-secret.yaml.tpl", {
+          hcloud_token = var.hcloud_token,
+          network_id   = var.network_id,
+          network_zone = "eu-central" # spans nbg1, fsn1, hel1
+        }),
+      },
+      { path        = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-hcloud-lb.yaml",
+        permissions = "0600",
+        owner       = "root:root",
+        content     = file("${path.module}/rke2-ingress-hcloud-lb.yaml"),
+      },
+      { path        = "/var/lib/rancher/rke2/server/manifests/hcloud-ccm-networks.yaml",
+        permissions = "0600",
+        owner       = "root:root",
+        content     = file("${path.module}/hcloud-ccm-networks.yaml"),
+      }
+  ])
 
   cloud_config_seed = {
     write_files = concat([
@@ -31,43 +65,7 @@ locals {
         owner       = "root:root",
         content     = file("${path.module}/install_rke2.sh")
       },
-      { path        = "/var/lib/rancher/rke2/server/manifests/rke2-canal-config.yaml",
-        permissions = "0600",
-        owner       = "root:root",
-        content     = file("${path.module}/rke2-canal-config.yaml"),
-      }],
-
-      # system-upgrade-controller
-      [
-        { path        = "/var/lib/rancher/rke2/server/manifests/system-upgrade-controller.yaml",
-          permissions = "0600",
-          owner       = "root:root",
-          content     = file("${path.module}/system-upgrade-controller.yaml"),
-        }
-      ],
-
-      # hetzner ccm
-      (!var.hetzner_ccm_enabled) ? [] : [
-        { path        = "/var/lib/rancher/rke2/server/manifests/hcloud-secret.yaml",
-          permissions = "0600",
-          owner       = "root:root",
-          content = templatefile("${path.module}/hcloud-secret.yaml.tpl", {
-            hcloud_token = var.hcloud_token,
-            network_id   = var.network_id,
-            network_zone = "eu-central" # spans nbg1, fsn1, hel1
-          }),
-        },
-        { path        = "/var/lib/rancher/rke2/server/manifests/rke2-ingress-hcloud-lb.yaml",
-          permissions = "0600",
-          owner       = "root:root",
-          content     = file("${path.module}/rke2-ingress-hcloud-lb.yaml"),
-        },
-        { path        = "/var/lib/rancher/rke2/server/manifests/hcloud-ccm-networks.yaml",
-          permissions = "0600",
-          owner       = "root:root",
-          content     = file("${path.module}/hcloud-ccm-networks.yaml"),
-        }
-    ])
+    ], local.auto_deplying_manifests),
 
     runcmd = [
       "apt-get update",
@@ -77,18 +75,21 @@ locals {
   }
 
   cloud_config = {
-    write_files = [
+    write_files = concat([
       { path        = "/etc/rancher/rke2/config.yaml",
         permissions = "0600",
         owner       = "root:root",
-        content     = jsonencode(local.rke2_config)
+        # Same as rke2_config_seed, except server is set
+        content = jsonencode(merge(local.rke2_config_seed, {
+          server = var.rke2_url
+        }))
       },
       { path        = "/opt/rke2/install_rke2.sh",
         permissions = "0755",
         owner       = "root:root",
         content     = file("${path.module}/install_rke2.sh")
       },
-    ]
+    ], local.auto_deplying_manifests),
     runcmd : [
       "apt-get update",
       "apt-get install -y jq",
